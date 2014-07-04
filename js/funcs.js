@@ -25,7 +25,8 @@ function getDetails()
 	alert('Server has sent the data');
 	//$("#getResult").text(data.mallPrice+" "+ data.imgURL);
 	//$("#dynimg").attr("src", data.imgURL);
-	cart[cart_top - 1] = data;//to change usind product id later
+	//cart[cart_top - 1] = data;//to change usind product id later
+	alert(data.mallPrice);
 	},"json");
 	});
 
@@ -267,20 +268,9 @@ function addEntry()
  function addEntry()
  {
  alert('in add entry');
- /* var parent_div=document.getElementById('wrapper');
+ var $ele=$('<div data-role="collapsible"><h3>Title</h3><p>Content</p></div>').appendTo(document.getElementById('wrapper'));
  
- var child_div=document.createElement('div');
- child_div.id=pd_Id;
- child_div.setAttribute("data-role",'collapsible');
- child_div.setAttribute("data-collapsed",'false');
- 
- $('child_divdiv[data-role=collapsible]').collapsible({refresh:true});
- var header=document.createElement('p');
- header.innerHTML="para";
- 
- child_div.appendChild(header);
- parent_div.appendChild(header); */
- 
+ $ele.collapsible();
  }
  
  

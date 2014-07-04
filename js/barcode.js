@@ -63,7 +63,7 @@ var app = {
 			splitter(result.text);
             alert("Name: " + details[1] + " Price: " + details[2]);  
 			begin();
-			//getDetails();
+			getDetails();
             console.log("Scanner result: \n" +
                 "text: " + result.text + "\n");
             
