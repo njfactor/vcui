@@ -15,7 +15,6 @@ function begin()
 //Server request to get product details
 function getDetails()
 {
-	$("#get").click(function(event) {
 	event.preventDefault();
 
 	var finurl= getQueryString(server_url,pd_Id);
@@ -28,7 +27,6 @@ function getDetails()
 	//cart[cart_top - 1] = data;//to change usind product id later
 	alert(data.mallPrice);
 	},"json");
-	});
 
 }
 
