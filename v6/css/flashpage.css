@@ -1,0 +1,10 @@
+ h1 {
+	font-family: Helvetica;
+	position: fixed;
+	left: 42%; 
+	top: 45%;
+	}
+	
+body {
+	background-color: orange;
+}

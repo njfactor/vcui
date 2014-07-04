@@ -1,0 +1,80 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        
+
+	<!-- These are our scripts -->
+	<script type="text/javascript" src="js\funcs.js"></script>
+
+
+<link rel="stylesheet" text="text/css" href="css\style.css"/>
+</head> 
+
+
+
+<body> 
+
+
+	<div id="cart">
+		<div id="clickers" class = "app">
+			<button id="add"><a href="#" class="topcoat-button" id="scan">Add</a></button> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+			<button id="pay" onClick = "addEntry()"/>Pay</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+			<button id="exit" onClick = "navigator.app.exitApp()"/>Exit</button>
+			<p id="amount">Amount:&nbspRs.</p>	
+			<p id="totalItemsDisplay">Items Added:</p>	
+		</div>
+		
+		<table id = "testtemp">
+		<tr>
+		<td>
+			<div id="container">
+			<table id="mytable">
+				<tr>
+				<td class="image">  <img src="shampoo.jpg" height="150px"></td>
+				<td class="nameid">name </br> id</br> mrp </td>
+				<td class="sbttl">
+					<input type="image" src="button.jpg"  id="remove" onClick="remove_object(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id)" height="40px" /></br>
+					<input type="text" value="1" id="quantity"  name="456" onclick="alert('yollo')"> <br/>
+					subttl
+				</td>
+				</tr>
+			</table>
+			</div>
+		</td>
+		</tr>
+		</table>
+	</div>
+	
+	
+	
+	
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="barcodescanner.js"></script>
+	<script type="text/javascript" src="childbrowser.js"></script>
+	<script type="text/javascript" src="js/barcode.js"></script>
+	<script type="text/javascript">app.initialize();</script>
+	
+<script>
+var details=[];//temporary array to hold the info properties in string form 
+var total_price=0;//total to be paid
+var cart=[];//array of objects;
+
+var cart_top=0;//same as sr no.
+
+//var QR_code;
+//var pd_Id;
+//var pd_Name;
+//var pd_Price;
+//var server_url;
+//var pd_subtotal;
+//var pd_Qty=1;
+//var index;
+</script>
+</body>
+</html>
