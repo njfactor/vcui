@@ -61,7 +61,7 @@ var app = {
 			if(result.text != "")
 			{
 			splitter(result.text);
-            alert("Name: " + details[1] + "<br>Price: " + details[2]);  
+            alert("Name: " + details[1] + "<br/>Price: " + details[2]);  
 			begin();
 			//getDetails();
             console.log("Scanner result: \n" +
