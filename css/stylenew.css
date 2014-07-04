@@ -7,8 +7,18 @@
 	display:none;
 	
 	}
-	#head
-	{
-		opacity: 0.8;
-	}
+	
+	.coll_head_butt{
+    margin-left : 50px ;
+    /*padding:1em !important;*/
+    border-style:none ;
+    box-shadow:none ;
+	float: right;
+}
+
+.deleteButton
+{
+	margin-right:0px;
+	float: right;
+}
 	

@@ -24,18 +24,18 @@
 	
 	<div data-role="navbar" class = "app"> 
 		<ul>
-			<li><a href="#" data-icon="plus" class="topcoat-button" id="scan" >Add</a></li>
-			<li><a href="#" data-icon="arrow-r" onClick="alert('pay')">Pay</a></li>
+			<li><a href="#" data-icon="plus" class="topcoat-button" id="scan"  onClick="begin()">Add</a></li>
+			<li><a href="#" data-icon="arrow-r" onClick="getDetails()">Pay</a></li>
 		</ul>
 	</div>
 	<br>
 	<div class="ui-grid-a">
-		<div class="ui-block-a">
-		TOTAL: 
+		<div class="ui-block-a" id="total">
+		TOTAL: <cartTotal id = "total_price"></cartTotal>
 		<span / >
 		</div>
-		<div class="ui-block-b">
-		ITEMS:
+		<div class="ui-block-b" id="">
+		ITEMS: <cartItems id = "total_items"></cartItems>
 		<span />
 		</div>
 	</div>
@@ -43,38 +43,6 @@
 
    <div data-role="main" class="ui-content">
 		<div id="wrapper" data-role="content">
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE1</h2>
-			<p> content</p>
-			</div>
-			
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE2</h2>
-			<p> content</p>
-			</div>
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE3</h2>
-			<p> content</p>
-			</div>	
-			
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE4</h2>
-			<p> content</p>
-			</div>	
-			
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE5</h2>
-			<p> content</p>
-			</div>	
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE6</h2>
-			<p> content</p>
-			</div>	
-			<div data-role="collapsible" data-collapsed="false">
-			<h2> SAMPLE7</h2>
-			<p> content</p>
-			</div>	
-			
 			
 		</div>
 		
@@ -93,17 +61,17 @@
 	<script type="text/javascript">app.initialize();</script>
 
 <script>
-var details=[];
+var details=["1111","p1","100","http://172.17.10.17/VC_Server/Default.aspx"];
 var cart=[];
 
 var total_price=0;
 var cart_top=0;
 
-var pd_Id;
-var pd_Name;
-var pd_Qty;
-var pd_subtotal=0;
-var pd_Price;
+var pdId;
+var pdName;
+var qty;
+var subTotal=0;
+var mallPrice;
 
 var server_url;
 </script>

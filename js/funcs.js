@@ -2,118 +2,51 @@ function begin()
 {
    assignment();
    confirm();
-   if( pd_Qty>0 && pd_Qty!=NaN )
+   if( qty>0 && qty!=NaN )
   {
       ok(); 
-	  addEntry();
+	  
   }
-  
-
+  updateAllConstantsDisplay();
 }
-
-
-//Server request to get product details
-function getDetails()
-{
-	event.preventDefault();
-
-	var finurl= getQueryString(server_url,pd_Id);
-	var jqxhr= $.get( finurl, function( data ) {
-	//alert(data);
-
-	alert('Server has sent the data');
-	//$("#getResult").text(data.mallPrice+" "+ data.imgURL);
-	//$("#dynimg").attr("src", data.imgURL);
-	//cart[cart_top - 1] = data;//to change usind product id later
-	alert(data.mallPrice);
-	},"json");
-
-}
-
-function getQueryString (url,pid)
-{	return  url+"?method=getProductDetails&pID="+pid;	}
 //end
 
-
-
-
-//Constructor for product class
-function product(pd_Name,pd_Id,pd_Price,pd_Qty)
+function updateAllConstantsDisplay()
 {
-	this.pd_Name = pd_Name;
-	this.pd_Id = pd_Id;
-	this.pd_Price = pd_Price;
-	this.pd_Qty=pd_Qty;
-    this.pd_subtotal=pd_subtotal;
-	//this.remove_object=remove_object;	
+	$("#total_price").text(total_price);
+	$("#total_items").text(cart_top);
 }
-
-function remove_object(id)
-{
-	var i;
-    for(i=0;i<cart_top;i++)
-   {
-        if((cart[i].pd_Id.localeCompare(id))==0)
-        break;
-   }
-    
-	var index=i;
-    total_price-=cart[i].pd_subtotal;//update the total price 
-	
-	var temp_arr_start=cart.splice(0,index+1);
-	temp_arr_start.pop();
-	cart=temp_arr_start.concat(cart);
-    
-	cart_top-=1;//update the cart index
-}
-
-	
-//end
-
-
-
-function create_object()
-{
-    var tempprod=new product(pd_Name,pd_Id,pd_Price,pd_Qty);
-    cart.push(tempprod);
-    cart_top++;
-}
-
 
 //to assign the details from the Qrcode to the global variables;
 function assignment()
 {
-  pd_Id=details[0];
-  pd_Name=details[1];
-  pd_Price=convert(details[2]);//price is parsed
+  pdId=details[0];
+  pdName=details[1];
+  mallPrice=convert(details[2]);//price is parsed
   server_url=details[3];
 }
-
-
-
+//end
 
 
 //if the user presses OK
 function confirm()
 {
-   pd_Qty=prompt(pd_Name+"   "+pd_Id+"    "+"\nenter quantity:","1");
-   if(pd_Qty!=null)//if non-empty
+   qty=prompt(pdName+"   "+pdId+"    "+"\nenter quantity:","1");
+   if(qty!=null)//if non-empty
   {
-     pd_Qty=convert(pd_Qty);
+     qty=convert(qty);//may or maynot be a number
   }
-  
 }
+//end
 
 
-
-
-
+//to check if the item scanned is already present in the cart
 function ok()
 {
    var x=check();
    if(x==0)//present
   {
-      alert("already present!!");
+      alert("This item is already present in your cart.Your item will be replaced.");
       //if(confirm("do you wish to replace the existing item?")==true)//( user presses OK)
       replace();
 	  //else( user presses CANCEL)
@@ -121,35 +54,137 @@ function ok()
   }
    else//not present
   {
-      alert("new item detected");
-      pd_subtotal=calc_subtotal(pd_Qty,pd_Price);
+      alert("You have scanned a new item.");
+      subTotal=calc_subtotal(qty,mallPrice);
 	  create_object();
-	  total_price+=pd_subtotal;
+	  total_price+=subTotal;
+	  
+	  addEntry();
   }
+}
+//end
+
+
+
+//Server request to get product details
+function getDetails()
+{
+    alert('in get details');//to be removed
+	event.preventDefault();
+
+	var finurl= getQueryString(server_url,pdId);
+	var jqxhr= $.get( finurl, function( data ) {
+	//alert(data);
+
+	alert('Server has sent the data');
+	//$("#getResult").text(data.mallPrice+" "+ data.imgURL);
+	//$("#dynimg").attr("src", data.imgURL);
+	
+	
+	var i;
+	for(i=0;i<cart_top;i++)
+	{
+	if((cart[i].pdId.localeCompare(data.pdId))==0)
+	break;
+	}
+	total_price-=cart[i].subTotal;
+	cart[i] = data;
+	alert(data.mallPrice);
+	data.qty=qty;
+	data.subTotal=calc_subtotal(data.qty,data.mallPrice);
+	$("#img" + cart[i].pdId).attr("src",data.imgURL);
+	$("#qt__" + cart[i].pdId).attr("value",data.qty);
+	$("#sTotal" + cart[i].pdId).text(data.subTotal);
+	$("#mPrice" + cart[i].pdId).text(data.mallPrice);//to be commented
+	total_price+=cart[i].subTotal;
+	updateAllConstantsDisplay();
+	},"json");
+
+	
+	//var pdImg=document.getElementById('img' + cart[i].pdId + '');
+	
+	
+}
+//end
+
+
+//to create the query string
+function getQueryString (url,pid)
+{	
+return  url+"?method=getProductDetails&pID="+pid;	
+}
+//end
+
+
+
+
+//Constructor for product class
+function product(pdName,pdId,mallPrice,qty)
+{
+	this.pdName = pdName;
+	this.pdId = pdId;
+	this.mallPrice = mallPrice;
+	this.qty=qty;
+    this.subTotal=subTotal;
+	//this.remove_object=remove_object;	
 }
 
 
+//to remove the product object from the cart array
+function remove_object(id)
+{
+	var i;
+	
+    for(i=0;i<cart_top;i++)
+   {
+        if((cart[i].pdId.localeCompare(id))==0)
+        break;
+   }
+    
+    total_price-=cart[i].subTotal;//update the total price 
+	
+	var temp_arr_start=cart.splice(0,i+1);
+	temp_arr_start.pop();
+	cart=temp_arr_start.concat(cart);
+    
+	cart_top-=1;//update the cart index
+	removeFromDisplay(id);
+	updateAllConstantsDisplay();
+}
+//end
 
 
+//creates a product object and inserts into the cart array
+function create_object()
+{
+    var tempprod=new product(pdName,pdId,mallPrice,qty);
+    cart.push(tempprod);
+    cart_top++;
+}
+//end
 
 
+//when an existing item is scanned,replacement occurs
 function replace()
 {
     var i;
     for(i=0;i<cart_top;i++)
   {
-        if((cart[i].pd_Id.localeCompare(pd_Id))==0)
+        if((cart[i].pdId.localeCompare(pdId))==0)
         break;
   }
-    
+    subTotal=calc_subtotal(qty,cart[i].mallPrice);//calculate the subtotal for now
+	cart[i].qty=qty;//replace the qty;
+	total_price=total_price-(cart[i].subTotal);//decrement the existing item's subtotal
+    cart[i].subTotal=subTotal;//update the subtotal;
+	total_price=total_price+subTotal;//update the total price
+		
+	$("#qt__" + cart[i].pdId).attr("value",cart[i].qty);
+	$("#sTotal" + cart[i].pdId).text(cart[i].subTotal);
 	
-	pd_subtotal=calc_subtotal(pd_Qty,pd_Price);//calculate the subtotal for now
-	cart[i].pd_Qty=pd_Qty;//replace the pd_Qty;
-	total_price=total_price-(cart[i].pd_subtotal);//decrement the existing item's subtotal
-    cart[i].pd_subtotal=pd_subtotal;//update the subtotal;
-	total_price=total_price+pd_subtotal;//update the total price
+	updateAllConstantsDisplay();
 }
-
+//end
 
 
 
@@ -161,29 +196,29 @@ function convert(x)
 {
    return parseInt(x);
 }
-
-
+//end
 
 
 //to calculate the item's subtotal
-function calc_subtotal(pd_Price,pd_Qty)
+function calc_subtotal(mallPrice,qty)
 {
-  return pd_Price*pd_Qty;
+  return mallPrice*qty;
 }
+//end
 
 
-
+//to check if the item is already present in the cart array
 function check()
 {
   var i;
   for(i=0;i<cart_top;i++)
  {
-    if((cart[i].pd_Id.localeCompare(pd_Id))==0)
+    if((cart[i].pdId.localeCompare(pdId))==0)
        return 0;
  }
   return 1;
 }
-
+//end
 
 
 
@@ -196,107 +231,41 @@ function splitter(info)
 //end
 
 
-/*
-function addEntry()
-{
- 	var table = document.getElementById('testtemp');
-	var rows=table.getElementsByTagName('tr');
-	var rowCount = (rows.length)/2;
-	
-	var row = table.insertRow(rowCount);
-	row.id=pd_Id;
-	
-	
-	var col= row.insertCell(0);
-    
-	var conDiv=document.createElement('div');
-    conDiv.id='container';
-	
-	
-	var innerTable=document.createElement('table');
-	innerTable.id='mytable';
-	
-	var innerRow=innerTable.insertRow(0);
-	// this innertable is to be appended later to the previous div conDiv
-	
-	var data0=innerRow.insertCell(0);
-	var data1=innerRow.insertCell(1);
-	var data2=innerRow.insertCell(2);
-	
-	//data0.innerHTML = "data0";
-	//data1.innerHTML = "data1";
-	//data2.innerHTML = "data2";
-	
-	data0.className='image';
-		var img_1=document.createElement('img');
-	    	img_1.setAttribute("height",'150px');
-	        img_1.setAttribute("src",'shampoo.jpg');
-	data0.appendChild(img_1);
-	
-	data1.className='nameid';
-	data1.innerHTML = pd_Name+"</br>"+pd_Id+"</br>"+pd_Price;
-	
-	data2.className='sbttl';
-		var box_1=document.createElement('input');
-	        box_1.setAttribute("type",'image');
-	        box_1.setAttribute("src",'button.jpg');
-			box_1.setAttribute("id",'remove');
-			box_1.setAttribute("onClick",'remove_object(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id)');
-			box_1.setAttribute("height",'40px');
-	
-		var box_2=document.createElement('input');
-			box_2.setAttribute("type",'text');
-			box_2.setAttribute("id",'quantity');
-			box_2.name=pd_Name;
-			box_2.setAttribute("value",'1');
-			box_2.setAttribute("onkeydown",'alert("panda")');
-	
-	data2.appendChild(box_1);
-	data2.appendChild(box_2);
-	data2.innerHTML =pd_subtotal;
-	
-	conDiv.appendChild(innerTable);
-	col.appendChild(conDiv);
-
- }
- */
- 
- 
- 
+//to add the product to the visible cart
  function addEntry()
  {
+ 
  alert('in add entry');
- var $ele=$('<div data-role="collapsible"><h3>Title</h3><p>Content</p></div>').appendTo(document.getElementById('wrapper'));
+ var $ele=$('<div data-role="collapsible" data-collapsed="false" id="'+pdId+'"><h1>'+pdName+'<a href="#" class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext" onclick="remove_object(this.id)" id = "'+pdId+'" style="float: right;">Delete</a></h1><div class="ui-grid-b"><div class="ui-block-a"><span><img src="" height = "200px"/ id="img' + pdId + '"></span></div><div class="ui-block-b"><span> <strong>Name:'+pdName+'<br>Id:'+pdId+' </strong><br><strong>Price: <span  id="mPrice' + pdId + '">'+mallPrice+'</span> </strong></span></div><div class="ui-block-c"><strong>Quantity:</strong> <input type="text" name="quantity" onkeyup="changeQuantity(this.id)" value="'+qty+'" id="qt__' + pdId + '" ><br>  <strong>Subtotal: <span id="sTotal' + pdId + '">'+subTotal+'</span></strong> </div></div></div>').appendTo(document.getElementById('wrapper'));
  
  $ele.collapsible();
  }
- 
- 
- 
- /*
- function change_qty()
- {
- alert('in changge_qty');
- // var data2=document.getElementByName(name).parentNode;
- 
- // var i;
- // for(i=0;i<cart_top;i++)
- // {
- // if(cart[i].pd_Name.localeCompare(name)==0)
- // break;
- // }
+//end 
 
 
- // var str_qty=document.getElementByName(name).value;
- // cart[i].pd_Qty=convert(str_qty); 
-  
- // total_price-=cart[i].pd_subtotal;
- // cart[i].pd_subtotal=calc_subtotal(cart[i].pd_Qty,cart[i].pd_Price);
- // total_price+=cart[i].pd_subtotal;
+function removeFromDisplay(id)
+{
+	$("#"+id).remove();
+}
 
- 
- // data2.innerHTML=cart[i].pd_subtotal;
- 
- 
- }
- */
+function changeQuantity(qtId)
+{
+	var actualId = qtId.split("__").pop();
+	
+	var i;
+    for(i=0;i<cart_top;i++)
+  {
+        if((cart[i].pdId.localeCompare(actualId))==0)
+        break;
+  }
+    subTotal=calc_subtotal(qty,cart[i].mallPrice);//calculate the subtotal for now
+	cart[i].qty=qty;//replace the qty;
+	total_price=total_price-(cart[i].subTotal);//decrement the existing item's subtotal
+    cart[i].subTotal=subTotal;//update the subtotal;
+	total_price=total_price+subTotal;//update the total price
+		
+	//$("#qt__" + cart[i].pdId).attr("value",cart[i].qty);
+	$("#sTotal" + cart[i].pdId).text(cart[i].subTotal);
+	
+	updateAllConstantsDisplay();
+}
