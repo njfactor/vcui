@@ -4,9 +4,10 @@ function begin()
    confirm();
    if( qty>0 && qty!=NaN )
   {
-      ok(); 
-	  
+      ok();   
   }
+  addEntry();
+  getDetails();
   updateAllConstantsDisplay();
 }
 //end
