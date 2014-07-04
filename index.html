@@ -25,7 +25,7 @@
 	<div data-role="navbar" class = "app"> 
 		<ul>
 			<li><a href="#" data-icon="plus" class="topcoat-button" id="scan">Add</a></li>
-			<li><a href="paymentPage.html" data-icon="arrow-r">Pay</a></li>
+			<li><a href="#pagetwo" data-icon="arrow-r">Pay</a></li>
 		</ul>
 	</div>
 	<br>
@@ -76,6 +76,46 @@ var mallPrice;
 
 var server_url;
 </script>
+
+<div data-role="page" id="pagetwo" >
+	<div data-role="header" data-position="fixed" data-theme="b" >
+		<h1> Actual Price:Rs.</h1>
+		<h1>Total Discount:Rs.</h1>
+		<h1>Grand Total:Rs.</h1> 
+	</div>
+	<div id="viewbill"data-role="main" class="ui-content">
+		<div  data-role="collapsible" data-theme="b">
+			<h1>View Bill</h1>
+		
+		
+		
+		
+		 <div class="ui-grid-c">
+      <div class="ui-block-a">
+        
+      PRODUCT NAME
+      </div>
+      <div class="ui-block-b">
+        QUANTITY
+      </div>
+      <div class="ui-block-c">
+        PRICE
+      </div>
+      <div class="ui-block-d">
+      SUB-TOTAL
+      </div>  
+    </div>
+</div>		
+</div>	
+	<div data-role="footer" data-position="fixed" data-theme="b">
+		<div data-role="navbar" data-theme="b">
+			<ul>
+				<li><a href="#" onclick = "" data-icon="arrow-r">SEND</a></li>
+				<li><a href="#pageone" data-icon="edit">EDIT</a></li>
+				<li><a href="#" onclick="navigator.app.exitApp()" data-icon="home">EXIT</a></li>
+			</ul>
+		</div>
+</div>
 
 </body>
 </html>
