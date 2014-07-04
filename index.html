@@ -24,8 +24,8 @@
 	
 	<div data-role="navbar" class = "app"> 
 		<ul>
-			<li><a href="#" data-icon="plus" class="topcoat-button" id="scan"  onClick="begin()">Add</a></li>
-			<li><a href="#" data-icon="arrow-r" onClick="getDetails()">Pay</a></li>
+			<li><a href="#" data-icon="plus" class="topcoat-button" id="scan">Add</a></li>
+			<li><a href="paymentPage.html" data-icon="arrow-r">Pay</a></li>
 		</ul>
 	</div>
 	<br>
@@ -61,7 +61,8 @@
 	<script type="text/javascript">app.initialize();</script>
 
 <script>
-var details=["1111","p1","100","http://172.17.10.17/VC_Server/Default.aspx"];
+//var details=["1111","p1","100","http://172.17.10.17/VC_Server/Default.aspx"];
+var details;
 var cart=[];
 
 var total_price=0;
